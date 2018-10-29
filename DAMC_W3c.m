@@ -72,17 +72,3 @@ for i = 1:outer_folds
     final_error(i) = classification_error;
     final_error_te(i) = classification_error_te;
 end
-
-%%
-[orderedInd, orderedPower] = rankfeat(inner_train_data, inner_train_labels, 'fisher');
-train_data_classif = trainData(:,orderedInd(1:75));
-classif = fitcdiscr(train_data_classif, trainLabels, 'discrimtype', 'linear');
-test_data_classif = testData(:,orderedInd(1:75));
-label_prediction = predict(classif, test_data_classif);
-labelToCSV(label_prediction, 'test_labels_linear_nested.csv', 'csv')
-
-%%
-subplot(2,2,1), boxplot(mean_error')
-subplot(2,2,2), boxplot(mean_error_val')
-subplot(2,2,3), boxplot(final_error)
-subplot(2,2,4), boxplot(final_error_te)
