@@ -35,7 +35,7 @@ for i = 1:outer_folds
 
         [orderedInd, orderedPower] = rankfeat(inner_train_data, inner_train_labels, 'fisher');
             
-        for N_sel = 1:15
+        for N_sel = 1:10
             train_data_sel = inner_train_data(:,orderedInd(1:N_sel));
             val_data_sel = inner_val_data(:,orderedInd(1:N_sel));
             classifier = fitcdiscr(train_data_sel, inner_train_labels, 'discrimtype', 'diaglinear');
@@ -43,8 +43,8 @@ for i = 1:outer_folds
             label_prediction = predict(classifier, train_data_sel);
             label_prediction_val = predict(classifier, val_data_sel);
 
-            [class_error, classification_error] = classification_errors(inner_train_labels, label_prediction);
-            [class_error_val, classification_error_val] = classification_errors(inner_val_labels, label_prediction_val);
+            classification_error = classification_errors(inner_train_labels, label_prediction);
+            classification_error_val = classification_errors(inner_val_labels, label_prediction_val);
 
             error(j,N_sel) = classification_error;
             error_val(j,N_sel) = classification_error_val;
