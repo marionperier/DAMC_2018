@@ -94,16 +94,18 @@ for i = 1:outer_folds
     outer_test_data = (outer_test_data - mu)./sigma;
 
     outer_coeff = pca(outer_train_data);
-    outer_PCA_data = outer_train_data * outer_coeff;
-    outer_PCA_data_te = outer_test_data * outer_coeff;
+    outer_PCA_data = inner_train_data * outer_coeff;
+    outer_PCA_data_te = inner_test_data * outer_coeff;
     
     outer_train_data_sel = outer_PCA_data(:,1:best_N(i));
     outer_test_data_sel = outer_PCA_data_te(:,1:best_N(i));
     outer_classifier = fitcdiscr(outer_train_data_sel, outer_train_labels, 'discrimtype', 'diaglinear');
 
-    outer_label_prediction = predict(outer_classifier, outer_test_data_sel);
+    outer_label_prediction = predict(outer_classifier, outer_train_data_sel);
+    outer_label_prediction_val = predict(outer_classifier, outer_test_data_sel);
 
-    classification_error_test(i) = classification_errors(outer_test_labels, outer_label_prediction);
+    classification_error = classification_errors(inner_train_labels, outer_label_prediction);
+    classification_error_val = classification_errors(inner_test_labels, outer_label_prediction_val);
     
 end
 

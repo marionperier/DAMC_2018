@@ -1,4 +1,4 @@
-function classification_error = classification_errors(correct_labels, predicted_labels)
+function class_error = classification_errors(correct_labels, predicted_labels)
 
 correct_indices = find(correct_labels == 0);
 error_indices = find(correct_labels == 1);
